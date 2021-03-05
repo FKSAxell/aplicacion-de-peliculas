@@ -25,7 +25,6 @@ class CardSwiper extends StatelessWidget {
                     fit: BoxFit.cover,
                     image: NetworkImage(
                       peliculas[index].getPoster()
-
                     )
                   )
                 );

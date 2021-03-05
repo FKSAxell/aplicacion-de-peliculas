@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:seccion6_componentes/src/providers/peliculas_provider.dart';
 import 'package:seccion6_componentes/src/widgets/card_swiper_widget.dart';
+import 'package:seccion6_componentes/src/widgets/movie_horizontal.dart';
 
 class HomePage extends StatelessWidget {
   final peliculasProvider = new PeliculasProvider();
+  
 
   @override
   Widget build(BuildContext context) {
+
+    peliculasProvider.getPopulares();
+
     return Scaffold(
         appBar: AppBar(
           title: Text("Peliculas en cines"),
@@ -34,8 +39,8 @@ class HomePage extends StatelessWidget {
         } else {
           return Container(
             child: Center(child: CircularProgressIndicator()),
-            height: MediaQuery.of(context).size.height *0.50, //deberia ser global reemplazar 400.0
-            padding: EdgeInsets.only(top: 10.0), //borrar
+            height: 400.0//MediaQuery.of(context).size.height *0.40, //deberia ser global reemplazar 400.0
+            //padding: EdgeInsets.only(top: 10.0), //borrar
           );
         }
       },
@@ -54,13 +59,25 @@ class HomePage extends StatelessWidget {
     return Container(
       width: double.infinity,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Populares', style: Theme.of(context).textTheme.subtitle1 ,),
-          FutureBuilder(
-            future: peliculasProvider.getPopulares(),
+          
+          Container(padding: EdgeInsets.only(left: 20.0), child: Text('Populares', style: Theme.of(context).textTheme.subtitle1 ,)),
+          
+          SizedBox(height:5.0 ,),
+          
+          StreamBuilder(
+            stream: peliculasProvider.popularesStream,
             builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
-        
-              return Container() ;
+              if (snapshot.hasData){
+                return MovieHorizontal(
+                  peliculas: snapshot.data,
+                  siguientePagina: peliculasProvider.getPopulares,
+                  );
+              }else{
+                return  Center(child: CircularProgressIndicator());
+              }
+              
             },
           ),
 
