@@ -17,6 +17,9 @@ class Peliculas {
 }
 
 class Pelicula {
+  
+  String    uniqueId;
+
   int       voteCount;
   int       id;
   bool      video;
@@ -73,4 +76,13 @@ class Pelicula {
       return 'https://image.tmdb.org/t/p/w500/$posterPath';
     }
   }
+
+    getBackgroundImg(){
+    if(posterPath == null){
+      return 'https://blog.rahulbhutani.com/wp-content/uploads/2020/05/Screenshot-2018-12-16-at-21.06.29.png';
+    }else{
+      return 'https://image.tmdb.org/t/p/w500/$backdropPath';
+    }
+  }
+
 }

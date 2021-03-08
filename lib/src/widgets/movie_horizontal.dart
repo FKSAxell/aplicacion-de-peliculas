@@ -21,8 +21,24 @@ class MovieHorizontal extends StatelessWidget {
 
 
     final _screenSize = MediaQuery.of(context).size;
-
-    
+    // OJO EFECTO FIN CON CURVA
+    // final s = MediaQuery.of(context).size;
+    // _pageController.addListener(() {
+    //   if (_pageController.position.pixels == _pageController.position.maxScrollExtent) {
+    //     _pageController.position.animateTo(
+    //       _pageController.position.maxScrollExtent - s.width * 0.35,
+    //       duration: Duration(milliseconds: 1000),
+    //       curve: Curves.elasticOut,
+    //     );
+    //   }
+    //   if (_pageController.position.pixels == _pageController.position.minScrollExtent) {
+    //     _pageController.position.animateTo(
+    //       s.width * 0.3,
+    //       duration: Duration(milliseconds: 1000),
+    //       curve: Curves.elasticOut,
+    //     );
+    //   }
+    // });
 
     
     _pageController.addListener(() {
@@ -61,17 +77,25 @@ class MovieHorizontal extends StatelessWidget {
   }
 
   Widget _tarjeta(BuildContext context,Pelicula pelicula){
-    return Container(
+    //GestureDetector: widget para detectar el clic o tab etc
+
+
+    pelicula.uniqueId = '${pelicula.id}-poster';
+
+    final tarjeta = Container(
         margin: EdgeInsets.only(right: 15.0),
         child:  Column(
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(20.0),
-              child: FadeInImage(
-                placeholder: AssetImage('assets/img/no-image.jpg'), 
-                image: NetworkImage(pelicula.getPoster()),
-                fit:BoxFit.cover,
-                height: 160.0,
+            Hero(
+              tag: pelicula.uniqueId,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20.0),
+                child: FadeInImage(
+                  placeholder: AssetImage('assets/img/no-image.jpg'), 
+                  image: NetworkImage(pelicula.getPoster()),
+                  fit:BoxFit.cover,
+                  height: 160.0,
+                ),
               ),
             ),
             SizedBox(height: 5.0,),
@@ -85,10 +109,19 @@ class MovieHorizontal extends StatelessWidget {
       );
  
 
+    return GestureDetector(
+      onTap: (){
+
+        //print(pelicula.title);
+        Navigator.pushNamed(context, 'detalle',arguments: pelicula);
+          
+      },
+      child: tarjeta,
+    );
+
   }
 
   // List<Widget> _tarjetas(context) {
-
   //   return peliculas.map((pelicula){
   //     return Container(
   //       margin: EdgeInsets.only(right: 15.0),
